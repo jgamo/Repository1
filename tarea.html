@@ -1,0 +1,67 @@
+<script language=javascript>
+	var request;
+	
+ function obtenerDatos() {
+	if(request.readyState == 4){
+		var obj = JSON.parse(request.responseText);
+		var urlString = 'url("./images/' + obj.weather[0].description + '.jpg")';
+
+		datos =  "<p id='p1'>"+obj.name;
+		datos = datos + "<p id='p2'>"+Math.round(obj.main.temp-273.15)+"°C";
+		datos = datos + "<p id='p3'>"+obj.weather[0].description;
+		
+		document.getElementById("background").innerHTML = '<img src="./images/' + obj.weather[0].description + '.jpg">';
+		document.getElementById("clima").innerHTML = datos;
+	}
+ }
+ 
+ function clima() {
+	if(navigator.onLine){
+		var url;
+	
+		url = "http://api.openweathermap.org/data/2.5/weather?q=toluca&APPID=80a92ed554c38445b6a7d9b53651d814";
+		request = new XMLHttpRequest();
+		request.open("GET", url, true);
+		request.onreadystatechange = obtenerDatos;
+		request.send(null);
+			
+	} else {
+		alert('No hay conexion a Internet');
+	}
+ }
+
+</script>
+<html>
+   <head>
+	<style type="text/css"> 
+		
+		html { background: url(fondo.jpg) no-repeat center center fixed; -webkit-background-size: cover; background-size: cover; }
+		body { font-family:verdana, arial, sans-serif;}
+		img { position:absolute; z-index:-2; width:100%; height:100%;top: 0; left: 0;}
+		.button {border-radius: 40px 40px 40px 40px; -moz-border-radius: 40px 40px 40px 40px; -webkit-border-radius: 40px 40px 40px 40px;
+			border: 2px solid #4b4b4d;font-size:15px;
+        font-family:Verdana,Helvetica;
+        font-weight:bold; color:#25257d}
+		#p1 {font-weight: bold;font-size:2em; margin-bottom:0;}
+		#p2 {font-weight: bold;font-size:3em;margin-top:0; margin-bottom:0;}
+		#p3 {font-size:1.5em;margin-top:0; margin-bottom:0;}
+		.button:hover {
+			background-color: #grey;
+			color: white;
+}
+	</style> 
+   	  <title>Clima</title>
+	  
+	  <meta charset="UTF-8">
+   </head>
+   <body  >
+		<div id="background"></div>
+		<center><br>
+		   <h1>Weather</h1>
+				<input type="button" name="bConsultar" class="button" value="Check" onclick="clima();">	
+		   </br> 
+		   <div id="clima"></div>
+		</center>
+
+</body>
+</html>
